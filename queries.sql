@@ -54,14 +54,17 @@ WHERE "collection_status" = 'Ready For Collection';
 SELECT "locker_id", "collection_status" FROM "orders"
 WHERE "collection_status" = 'Collected';
 
--- Check for which order can have their `collection_order` attribute updated from "In-Store" to "Ready For Collection" after a job is completed
-SELECT "o"."id" AS "order_id", "j"."job_status" FROM "string_job" AS "j"
-INNER JOIN "orders" AS "o" ON "j"."customer_id" = "o"."customer_id"
-WHERE "o"."collection_status" = 'In-Store' AND "j"."job_status" = 'Completed';
+-- Check for which order can have their `collection_status` attribute updated from "In-Store" to "Ready For Collection" once all of its jobs are completed
+SELECT "o"."id" AS "order_id" FROM "orders" AS "o"
+WHERE "o"."collection_status" = 'In-Store'
+AND NOT EXISTS (
+    SELECT 1 FROM "string_job" AS "j"
+    WHERE "j"."order_id" = "o"."id" AND "j"."job_status" = 'Pending'
+);
 
 -- Check for which order can have their current workload or job queue to be fulfilled
-SELECT "o"."id" AS "order_id", "j"."job_status" FROM "string_job" AS "j"
-INNER JOIN "orders" AS "o" ON "j"."customer_id" = "o"."customer_id"
+SELECT "o"."id" AS "order_id", "j"."id" AS "job_id", "j"."job_status" FROM "string_job" AS "j"
+INNER JOIN "orders" AS "o" ON "j"."order_id" = "o"."id"
 WHERE "o"."collection_status" = 'In-Store' AND "j"."job_status" = 'Pending';
 
 -- Check for the specifications of a string job by "order_id"
