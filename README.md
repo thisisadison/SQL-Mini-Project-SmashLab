@@ -1,7 +1,6 @@
 # 🏸 Smash Lab Database
 
-<!-- Add your banner image at docs/images/banner.png, then uncomment the next line -->
-<!-- ![Smash Lab](docs/images/banner.png) -->
+![Smash Lab](docs/images/banner.png)
 
 **Smash Lab** is a SQLite database for a badminton racket-restringing shop. It tracks customers, staff, strings, orders and individual stringing jobs, from racket drop-off through to contactless locker pickup.
 
