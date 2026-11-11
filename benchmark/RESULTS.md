@@ -6,7 +6,7 @@ Index sets:
 
 - **none**: no secondary indexes
 - **original**: the first version's indexes on `string_job(order_id)`, `string_job(job_status)` and `orders(collection_status)`
-- **current**: the indexes in `schema.sql`
+- **current**: the indexes in `sql/schema.sql`
 
 ## Small shop (~1 year): 1,500 customers, 5,000 orders, 8,975 string jobs
 

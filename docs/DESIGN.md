@@ -103,14 +103,15 @@ The `string_job` table includes the following:
 
 ### Relationships
 
-![alt text](diagram.png)
+![Smash Lab ER diagram](images/er-diagram.png)
 
 ## Optimizations
 
 The following are the justifications for the indexes created to optimise Smash Lab's common queries.
 
-* With reference to the commonly made queries with Smash Lab in `queries.sql`, searching by both `collection_status` and `job_status` is imperative for facilitating efficient and smooth locker usage. As such, indexes are created on the `collection status` column in `orders` and `job_status` column in `string_job` to speed up search by both attributes.
-* Many queries in `queries.sql` also filter information crucial to shop operability such as order details and order/shop pricing using the `order_id` column. As such, indexes are created on the `order_id` columns to speed up searches by this attribute.
+* With reference to the commonly made queries with Smash Lab in `sql/queries.sql`, searching by both `collection_status` and `job_status` is imperative for facilitating efficient and smooth locker usage. As such, indexes are created on the `collection status` column in `orders` and `job_status` column in `string_job` to speed up search by both attributes.
+* Many queries in `sql/queries.sql` also filter information crucial to shop operability such as order details and order/shop pricing using the `order_id` column. As such, indexes are created on the `order_id` columns to speed up searches by this attribute.
+* These choices are measured in [`benchmark/RESULTS.md`](../benchmark/RESULTS.md). On a synthetic dataset of 50,000 orders and 90,034 string jobs, the indexes cut the total time for the seven common queries from about 5.6 s to 31 ms. The index on `collection_status` gives no gain for "lockers to reclaim", since about 97% of orders are `Collected` and the index barely narrows the search.
 
 ## Limitations
 

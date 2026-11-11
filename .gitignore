@@ -1,0 +1,5 @@
+# Local databases built from the SQL files
+*.db
+
+# Python
+__pycache__/

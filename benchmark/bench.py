@@ -1,11 +1,11 @@
 """Benchmark Smash Lab's common queries under different index sets.
 
-Loads the tables from schema.sql, fills them with synthetic data at three
-sizes, and times every query in queries.sql against:
+Loads the tables from sql/schema.sql, fills them with synthetic data at three
+sizes, and times every query in sql/queries.sql against:
 
   none      -- no secondary indexes
   original  -- the first version's indexes (order_id, job_status, collection_status)
-  current   -- the indexes currently in schema.sql
+  current   -- the indexes currently in sql/schema.sql
 
 Usage (from the repo root):
     python3 benchmark/bench.py
@@ -47,8 +47,8 @@ SHORT = [
 
 
 def load_sql():
-    schema = open(os.path.join(REPO, "schema.sql")).read()
-    queries_sql = open(os.path.join(REPO, "queries.sql")).read()
+    schema = open(os.path.join(REPO, "sql", "schema.sql")).read()
+    queries_sql = open(os.path.join(REPO, "sql", "queries.sql")).read()
     index_ddl = re.findall(r'CREATE INDEX[^;]+;', schema)
     table_ddl = schema
     for d in index_ddl:
@@ -172,7 +172,7 @@ def report(variants, results):
            "- **none**: no secondary indexes",
            "- **original**: the first version's indexes on `string_job(order_id)`, "
            "`string_job(job_status)` and `orders(collection_status)`",
-           "- **current**: the indexes in `schema.sql`", ""]
+           "- **current**: the indexes in `sql/schema.sql`", ""]
     for label, n_customers, n_orders, n_jobs, rows in results:
         out += [f"## {label}: {n_customers:,} customers, {n_orders:,} orders, {n_jobs:,} string jobs", "",
                 "| Query | " + " | ".join(names) + " | Rows |",
